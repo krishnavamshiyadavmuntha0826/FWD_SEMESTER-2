@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Virtual Recipe Resource Hub</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f2f2f2;
+text-align:center;
+margin:0;
+}
+
+header{
+background:#2e7d32;
+color:white;
+padding:15px;
+}
+
+.box{
+background:white;
+width:350px;
+margin:auto;
+padding:20px;
+border-radius:10px;
+box-shadow:0 0 10px gray;
+margin-top:80px;
+}
+
+input{
+width:90%;
+padding:10px;
+margin:10px;
+}
+
+button{
+padding:10px 20px;
+background:#2e7d32;
+color:white;
+border:none;
+cursor:pointer;
+margin:5px;
+border-radius:5px;
+}
+
+.recipe{
+background:white;
+width:320px;
+margin:20px auto;
+padding:15px;
+border-radius:10px;
+box-shadow:0 0 5px gray;
+}
+
+.recipe img{
+width:300px;
+height:200px;
+border-radius:10px;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN PAGE -->
+
+<div id="loginPage">
+
+<div class="box">
+
+<h2>Recipe Hub Login</h2>
+
+<input type="text" id="username" placeholder="Username"><br>
+<input type="password" id="password" placeholder="Password"><br>
+
+<button onclick="login()">Login</button>
+
+<p id="loginMsg"></p>
+
+</div>
+
+</div>
+
+
+<!-- HOME PAGE -->
+
+<div id="homePage" style="display:none">
+
+<header>
+<h1>Virtual Recipe Resource Hub</h1>
+</header>
+
+<br>
+
+<button onclick="showRecipes()">Show Recipes</button>
+<button onclick="showAdd()">Add Recipe</button>
+<button onclick="logout()">Logout</button>
+
+</div>
+
+
+<!-- RECIPES PAGE -->
+
+<div id="recipePage" style="display:none">
+
+<header>
+<h2>Recipes</h2>
+</header>
+
+<div id="recipes"></div>
+
+<button onclick="backHome()">Back</button>
+
+</div>
+
+
+<!-- ADD RECIPE PAGE -->
+
+<div id="addPage" style="display:none">
+
+<div class="box">
+
+<h2>Add Recipe</h2>
+
+<input type="text" id="rname" placeholder="Recipe Name">
+
+<button onclick="addRecipe()">Add Recipe</button>
+<button onclick="backHome()">Back</button>
+
+<p id="addMsg"></p>
+
+</div>
+
+</div>
+
+
+<!-- ORDER PAGE -->
+
+<div id="orderPage" style="display:none">
+
+<div class="box">
+
+<h2>Order Recipe</h2>
+
+<img id="orderImage" width="250"><br><br>
+
+<p id="orderRecipeName"></p>
+
+<input type="text" id="customer" placeholder="Your Name">
+<input type="text" id="mobile" placeholder="Mobile Number">
+<input type="text" id="address" placeholder="Delivery Address">
+
+<button onclick="placeOrder()">Place Order</button>
+<button onclick="backHome()">Back</button>
+
+<p id="orderMsg"></p>
+
+</div>
+
+</div>
+
+
+<script>
+
+var recipes=[
+{name:"Chicken Biryani",img:"https://images.unsplash.com/photo-1604908176997-431c5f0b75f4"},
+{name:"Mutton Keema",img:"https://images.unsplash.com/photo-1603894584373-5ac82b2ae398"},
+{name:"Butter Chicken",img:"https://images.unsplash.com/photo-1631515243349-e0cb75fb8d3a"},
+{name:"Paneer Curry",img:"https://images.unsplash.com/photo-1631452180519-c014fe946bc7"},
+{name:"Veg Fried Rice",img:"https://images.unsplash.com/photo-1603133872878-684f208fb84b"}
+];
+
+function login(){
+
+var u=document.getElementById("username").value;
+var p=document.getElementById("password").value;
+
+if(u=="admin" && p=="1234"){
+
+document.getElementById("loginPage").style.display="none";
+document.getElementById("homePage").style.display="block";
+
+}else{
+
+document.getElementById("loginMsg").innerHTML="Invalid Login";
+
+}
+
+}
+
+
+function logout(){
+
+document.getElementById("homePage").style.display="none";
+document.getElementById("recipePage").style.display="none";
+document.getElementById("addPage").style.display="none";
+document.getElementById("orderPage").style.display="none";
+
+document.getElementById("loginPage").style.display="block";
+
+document.getElementById("username").value="";
+document.getElementById("password").value="";
+
+}
+
+
+function showRecipes(){
+
+document.getElementById("homePage").style.display="none";
+document.getElementById("recipePage").style.display="block";
+
+var data="";
+
+for(var i=0;i<recipes.length;i++){
+
+data+="<div class='recipe'>";
+data+="<img src='"+recipes[i].img+"'>";
+data+="<h3>"+recipes[i].name+"</h3>";
+data+="<button onclick='orderRecipe("+i+")'>Order</button>";
+data+="</div>";
+
+}
+
+document.getElementById("recipes").innerHTML=data;
+
+}
+
+
+function showAdd(){
+
+document.getElementById("homePage").style.display="none";
+document.getElementById("addPage").style.display="block";
+
+}
+
+
+function backHome(){
+
+document.getElementById("recipePage").style.display="none";
+document.getElementById("addPage").style.display="none";
+document.getElementById("orderPage").style.display="none";
+
+document.getElementById("homePage").style.display="block";
+
+}
+
+
+function addRecipe(){
+
+var name=document.getElementById("rname").value;
+
+if(name==""){
+
+document.getElementById("addMsg").innerHTML="Enter Recipe Name";
+return;
+
+}
+
+recipes.push({
+name:name,
+img:"https://images.unsplash.com/photo-1546069901-ba9599a7e63c"
+});
+
+document.getElementById("addMsg").innerHTML="Recipe Added Successfully";
+
+document.getElementById("rname").value="";
+
+}
+
+
+function orderRecipe(i){
+
+document.getElementById("recipePage").style.display="none";
+document.getElementById("orderPage").style.display="block";
+
+document.getElementById("orderRecipeName").innerHTML=recipes[i].name;
+document.getElementById("orderImage").src=recipes[i].img;
+
+}
+
+
+function placeOrder(){
+
+var c=document.getElementById("customer").value;
+var m=document.getElementById("mobile").value;
+var a=document.getElementById("address").value;
+
+if(c=="" || m=="" || a==""){
+
+document.getElementById("orderMsg").innerHTML="Enter all details";
+return;
+
+}
+
+document.getElementById("orderMsg").innerHTML="Order Placed Successfully";
+
+}
+
+</script>
+
+</body>
+</html>
